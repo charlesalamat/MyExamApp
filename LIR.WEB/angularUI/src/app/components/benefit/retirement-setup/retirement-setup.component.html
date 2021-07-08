@@ -1,0 +1,65 @@
+<div class="column">
+    <button class="btn btn-primary" type="button" (click)="openModal(content)">Configure</button>
+    <div class="row">
+        <div class="col-lg-12">
+            <label>Guaranteed Issue: {{ GuaranteedIssue }}</label>
+        </div>
+        <div class="col-lg-12">
+            <label>Max Age Limit: {{ MaxAgeLimit }}</label>
+        </div>
+        <div class="col-lg-12">
+            <label>Min Age Limit: {{ MinAgeLimit }}</label>
+        </div>
+        <div class="col-lg-12">
+            <label>Minimum Range: {{ MinimumRange }} </label>
+        </div>
+        <div class="col-lg-12">
+            <label>Maximum Range: {{ MaximumRange }} </label>
+        </div>
+        <div class="col-lg-12">
+            <label>Increments: {{ Increments }} </label>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Retirement Setup</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="setupForm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <label>Guaranteed Issue</label>
+                    <input class="form-control" type="number" formControlName="guaranteedIssue" id="guaranteedIssue" name="guaranteedIssue">
+                </div>
+                <div class="col-lg-12">
+                    <label>Max Age Limit</label>
+                    <input class="form-control" type="number" formControlName="maxAgeLimit" id="maxAgeLimit" name="maxAgeLimit">
+                </div>
+                <div class="col-lg-12">
+                    <label>Min Age Limit</label>
+                    <input class="form-control" type="number" formControlName="minAgeLimit" id="minAgeLimit" name="minAgeLimit">
+                </div>
+                <div class="col-lg-12">
+                    <label>Minimum Range</label>
+                    <input class="form-control" type="number" formControlName="minimumRange" id="minimumRange" name="minimumRange">
+                </div>
+                <div class="col-lg-12">
+                    <label>Maximum Range</label>
+                    <input class="form-control" type="number" formControlName="maximumRange" id="maximumRange" name="maximumRange">
+                </div>
+                <div class="col-lg-12">
+                    <label>Increments</label>
+                    <input class="form-control" type="number" formControlName="increments" id="increments" name="increments">
+                </div>
+                <div class="col-lg-12" style="text-align: end;">
+                    <button class="btn btn-primary" type="button" (click)="onSubmit(setupForm)">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

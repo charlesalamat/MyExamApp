@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LIR.DAL\LIR.DAL.csproj" />
+    <ProjectReference Include="..\LIR.VIEWMODEL\LIR.VIEWMODEL.csproj" />
+  </ItemGroup>
+
+</Project>
