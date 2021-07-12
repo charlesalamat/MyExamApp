@@ -10,6 +10,12 @@ namespace LIR.DAL
         {
 
         }
+
+        public LIRDbContext()
+        {
+
+        }
+
         public DbSet<RetirementSetup> RetirementSetups { get; set; }
         public DbSet<ConsumerProfile> ConsumerProfiles { get; set; }
         public DbSet<ConsumerBenefitResult> ConsumerBenefitResults { get; set; }

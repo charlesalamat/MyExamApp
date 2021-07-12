@@ -19,6 +19,10 @@ export class AppService {
     return this.http.post<ConsumerProfile>(this.apiURL + 'api/Benefit/compute', consumerProfile);
   }
 
+  viewMyHistory(consumerName: any): Observable<ConsumerProfile>{
+    return this.http.get<ConsumerProfile>(this.apiURL + 'api/Benefit/viewmyhistory?consumerName=' + consumerName);
+  }
+
   getRetirementSetup(): Observable<RetirementSetup>{
     return this.http.get<RetirementSetup>(this.apiURL + 'api/Benefit/getSetup');
   }

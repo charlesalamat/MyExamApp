@@ -26,6 +26,7 @@
     "datatables.net": "^1.10.25",
     "datatables.net-bs4": "^3.2.2",
     "datatables.net-dt": "^1.1.0",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
     "ng-orderby-pipe": "^0.14.0",
     "rxjs": "~6.6.0",

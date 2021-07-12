@@ -25,7 +25,7 @@ namespace LIR.INFRASTRUCTURE.Services
             try
             {
                 //check if consumer have record
-                var consumerExist = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == model.ConsumerName);
+                var consumerExist = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == model.ConsumerName.Trim());
                 if (consumerExist == null)
                 {
                     //new record
@@ -35,7 +35,7 @@ namespace LIR.INFRASTRUCTURE.Services
                 else
                 {
                     //update record
-                    var modifyProfile = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == model.ConsumerName);
+                    var modifyProfile = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == model.ConsumerName.Trim());
                     modifyProfile.BasicSalary = model.BasicSalary;
                     modifyProfile.Birthdate = model.Birthdate;
 
@@ -44,11 +44,46 @@ namespace LIR.INFRASTRUCTURE.Services
 
                     model = modifyProfile;
                 }
-
                 var result = GenerateBenefit(model);
-                if (result)
+
+                if (result != null)
                 {
-                    var getAllRequest = _context.ConsumerBenefitResults.Where(x => x.ConsumerProfileId == model.Id);
+                    var bindRequest = from data in result.ConsumerBenefitResults
+                                      select new ConsumerBenefitResultViewModel()
+                                      {
+                                          Id = data.Id,
+                                          TransactionDateTime = data.TransactionDateTime,
+                                          Multiple = data.Multiple,
+                                          BenefitsAmountQuotation = data.BenefitsAmountQuotation,
+                                          PendedAmount = data.PendedAmount,
+                                          Benefits = data.Benefits
+                                      };
+
+                    return new ConsumerProfileViewModel()
+                    {
+                        ConsumerName = result.ConsumerName.Trim(),
+                        BasicSalary = result.BasicSalary,
+                        Birthdate = result.Birthdate,
+                        ConsumerBenefitResults = bindRequest.OrderByDescending(x => x.TransactionDateTime).ToList()
+                    };
+                }
+                return new ConsumerProfileViewModel();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public ConsumerProfileViewModel ViewMyHistory(string consumerName)
+        {
+            try
+            {
+                var result = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == consumerName.Trim());
+                if (result != null)
+                {
+                    var getAllRequest = _context.ConsumerBenefitResults.Where(x => x.ConsumerProfileId == result.Id);
 
                     var bindRequest = from data in getAllRequest
                                       select new ConsumerBenefitResultViewModel()
@@ -61,17 +96,14 @@ namespace LIR.INFRASTRUCTURE.Services
                                           Benefits = data.Benefits
                                       };
 
-                    var resultModel = new ConsumerProfileViewModel()
+                    return new ConsumerProfileViewModel()
                     {
-                        ConsumerName = model.ConsumerName,
-                        BasicSalary = model.BasicSalary,
-                        Birthdate = model.Birthdate,
-                        ConsumerBenefitResults = bindRequest.ToList()
+                        ConsumerName = result.ConsumerName.Trim(),
+                        BasicSalary = result.BasicSalary,
+                        Birthdate = result.Birthdate,
+                        ConsumerBenefitResults = bindRequest.OrderByDescending(x => x.TransactionDateTime).ToList()
                     };
-
-                    return resultModel;
                 }
-
                 return null;
             }
             catch (Exception)
@@ -81,7 +113,7 @@ namespace LIR.INFRASTRUCTURE.Services
             }
         }
 
-        private bool GenerateBenefit(ConsumerProfile model)
+        private ConsumerProfile GenerateBenefit(ConsumerProfile model)
         {
             try
             {
@@ -124,7 +156,7 @@ namespace LIR.INFRASTRUCTURE.Services
                     incrementedValue += retirementSetup.Increments;
                 }
 
-                return true;
+                return model;
             }
             catch (Exception)
             {

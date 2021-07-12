@@ -20,28 +20,14 @@ namespace LIR.WEB.API
             IMapper mapper)
         {
             _retirementSetupRepository = retirementSetupRepository;
-            _mapper = mapper;
             _consumerProfileRepository = consumerProfileRepository;
+            _mapper = mapper;
         }
 
-        [HttpPost("createSetup")]
-        public IActionResult CreateSetup([FromBody]RetirementSetupViewModel viewModel)
-        {
-            try
-            {
-                var result = _retirementSetupRepository.CreateSetup(_mapper.Map<RetirementSetupViewModel, RetirementSetup>(viewModel));
-                if (result)
-                {
-                    return Ok();
-                }
-                return BadRequest();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.ToString());
-            }
-        }
-
+        /// <summary>
+        /// Get setup setting for computation
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("getSetup")]
         public IActionResult GetSetup()
         {
@@ -61,6 +47,11 @@ namespace LIR.WEB.API
             }
         }
 
+        /// <summary>
+        /// Configure the setup setting for computation
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost("configureSetup")]
         public IActionResult ConfigureSetup([FromBody]RetirementSetupViewModel viewModel)
         {
@@ -81,6 +72,11 @@ namespace LIR.WEB.API
             }
         }
 
+        /// <summary>
+        /// Complete computation request
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost("compute")]
         public IActionResult Compute([FromBody] ConsumerProfileViewModel viewModel)
         {
@@ -88,6 +84,29 @@ namespace LIR.WEB.API
             {
                 var result = _consumerProfileRepository.RequestComputation(_mapper.Map<ConsumerProfileViewModel, ConsumerProfile>(viewModel));
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Get consumer computation history
+        /// </summary>
+        /// <param name="consumerName"></param>
+        /// <returns></returns>
+        [HttpGet("viewmyhistory")]
+        public IActionResult ViewMyHistory(string consumerName)
+        {
+            try
+            {
+                var result = _consumerProfileRepository.ViewMyHistory(consumerName);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return Ok(new ConsumerProfileViewModel());
             }
             catch (Exception ex)
             {

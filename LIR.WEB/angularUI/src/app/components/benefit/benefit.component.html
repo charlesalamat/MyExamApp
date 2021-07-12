@@ -1,60 +1,79 @@
 ﻿
 <div class="card">
     <div class="card-header">
-        <h3>Request for Computation</h3>
+        <div class="row">
+            <div class="col-lg-8">
+                <h4>Request for Computation</h4>
+            </div>
+            <div class="col-lg-4" style="text-align: end;">
+                <app-retirement-setup></app-retirement-setup>
+            </div>
+        </div>
     </div>
-    <div class="card-block">
+    <div class="card-block" style="padding-bottom: 25px;">
         <div class="column">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="container" style="padding-top: 25px;">
-                        <div class="card-title">
-                            <h5>Consumer Profile</h5>
-                        </div>
                         <form [formGroup]="consumerForm">
                             <div class="col-lg-12">
-                                <label>Name</label>
-                                <input class="form-control" type="text" formControlName="ConsumerName">
+                                <label>Consumer Name</label>
+                                <input class="form-control" type="text" id="ConsumerName" formControlName="ConsumerName">
                             </div>
                             <div class="col-lg-12">
                                 <label>Basic Salary</label>
-                                <input class="form-control" type="number" formControlName="BasicSalary">
+                                <input class="form-control" min="0" type="number" id="BasicSalary" formControlName="BasicSalary">
                             </div>
                             <div class="col-lg-12">
                                 <label>Birth Date</label>
-                                <input class="form-control" type="date" formControlName="Birthdate">
-                            </div>
-                            <div class="col-lg-12" style="text-align: end;">
-                                <button class="btn btn-primary" [disabled]="consumerForm.invalid" type="button" (click)="onSubmit(consumerForm)">Compute</button>
+                                <input class="form-control" type="date" id="Birthdate" formControlName="Birthdate">
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <app-retirement-setup></app-retirement-setup>
-                </div>
-            </div>
-            <div class="col-lg-12" style="overflow: auto; height: 500px;">
-                <!-- <app-request-history></app-request-history> -->
-                <div *ngFor="let ids of consumerRequestDates">
-                        <table class="row-border hover" style="width: 100%;">
-                            <thead>
-                                <th>Multiple</th>
-                                <th>Benefit Amount Quoatation</th>
-                                <th>Pended Amount</th>
-                                <th>Benefit</th>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let data of getRecordByTransaction(ids)">
-                                        <td>{{data.multiple}}</td>
-                                        <td>{{data.benefitsAmountQuotation}}</td>
-                                        <td>{{data.pendedAmount}}</td>
-                                        <td>{{data.benefits}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                </div>
             </div>
         </div>
     </div>
+    <div class="card-footer" style="text-align: end;">
+        <button class="btn btn-warning" type="button" title="Reset" id="resetFormBtn" (click)="onReset()"><i class="fa fa-retweet" aria-hidden="true"></i></button>
+        <button class="btn btn-primary" style="margin-left: 10px;" [disabled]="consumerForm.value.ConsumerName == ''" title="View My History" type="button" id="viewHistoryBtn" (click)="onViewHistory(consumerForm, content)"><i class="fa fa-history" aria-hidden="true"></i></button>
+        <button class="btn btn-success" style="margin-left: 10px;" [disabled]="consumerForm.invalid" type="button" id="submitComputationBtn" (click)="onSubmit(consumerForm, content)">Compute</button>
+    </div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ modalTitle }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="max-height: calc(100vh - 200ox); overflow-y: auto;">
+        <div class="col-lg-12" style="overflow: auto;">
+            <!-- <app-request-history></app-request-history> -->
+            <div *ngFor="let ids of consumerRequestDates">
+                    <table class="row-border hover" border="1" style="width: 100%;">
+                        <thead>
+                            <th>Multiple</th>
+                            <th>Benefit Amount Quotation</th>
+                            <th>Pended Amount</th>
+                            <th>Benefit</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of getRecordByTransaction(ids)">
+                                    <td>{{data.multiple}}</td>
+                                    <td>{{data.benefitsAmountQuotation}}</td>
+                                    <td>{{data.pendedAmount}}</td>
+                                    <td>{{data.benefits}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <br />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" id="closeResultBtn" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+
