@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Request for Computation</h3>
+            </div>
+            <!-- <div class="col-lg-6" style="text-align: end;">
+                <button [routerLink]='["/employee-select"]' class="btn btn-primary">Add Record</button>
+            </div> -->
+        </div>
+    </div>
+    <div class="card-block" style="padding: 10px;">
+        <div class="container">
+            <form [formGroup]="consumerForm">
+                <div class="col-lg-12">
+                    <label>Consumer Name</label>
+                    <input class="form-control" type="text" id="ConsumerName" formControlName="ConsumerName">
+                </div>
+                <div class="col-lg-12">
+                    <label>Basic Salary</label>
+                    <input class="form-control" min="0" type="number" id="BasicSalary" formControlName="BasicSalary">
+                </div>
+                <div class="col-lg-12">
+                    <label>Birth Date</label>
+                    <input class="form-control" type="date" id="Birthdate" formControlName="Birthdate">
+                </div>
+                <div class="col-lg-12" *ngIf="consumerBenefitResult.length != 0">
+                    <hr />
+                    <label>Computation Result</label>
+                    <br />
+                    <table class="table table-bordered table-striped table-hover" style="width: 100%;">
+                        <thead>
+                            <th>Multiple</th>
+                            <th>Benefit Amount Quotation</th>
+                            <th>Pended Amount</th>
+                            <th>Benefit</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of consumerBenefitResult">
+                                <td>{{data.multiple}}</td>
+                                <td>{{data.benefitsAmountQuotation}}</td>
+                                <td>{{data.pendedAmount}}</td>
+                                <td>{{data.benefits}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <br />
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-footer" style="text-align: end;">
+        <button class="btn btn-warning" type="button" title="Reset" id="resetFormBtn" (click)="onReset()">Reset</button>
+        <button class="btn btn-success" style="margin-left: 10px;" [disabled]="consumerForm.invalid" type="button" id="submitComputationBtn" (click)="onSubmit(consumerForm)">Compute</button>
+    </div>
+</div>

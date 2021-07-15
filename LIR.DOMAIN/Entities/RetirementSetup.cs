@@ -10,9 +10,7 @@ namespace LIR.DOMAIN.Entities
     public class RetirementSetup : BaseModel
     {
         public double GuaranteedIssue { get; set; }
-        [MaxLength(3)]
         public int MaxAgeLimit { get; set; }
-        [MaxLength(3)]
         public int MinAgeLimit { get; set; }
         public int MinimumRange { get; set; }
         public int MaximumRange { get; set; }

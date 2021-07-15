@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using LIR.DAL;
 using LIR.INFRASTRUCTURE.Interfaces;
 using LIR.INFRASTRUCTURE.Services;
@@ -33,6 +34,8 @@ namespace LIR.WEB
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IRetirementSetupRepository, RetirementSetupRepository>();
             services.AddScoped<IConsumerProfileRepository, ConsumerProfileRepository>();
+
+            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +62,7 @@ namespace LIR.WEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Benefit}/{action=Request}/{id?}");
             });
         }
     }

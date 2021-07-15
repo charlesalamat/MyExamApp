@@ -20,12 +20,69 @@ namespace LIR.INFRASTRUCTURE.Services
             _context = context;
         }
 
+        public List<ConsumerProfileViewModel> GetAll()
+        {
+            try
+            {
+                var consumers = _context.ConsumerProfiles.ToList();
+                var result = from data in consumers
+                             select new ConsumerProfileViewModel()
+                             {
+                                 Id = data.Id,
+                                 ConsumerName = data.ConsumerName,
+                                 BasicSalary = data.BasicSalary,
+                                 Birthdate = data.Birthdate,
+                                 BirthdateStr = data.Birthdate.ToString("MMM dd, yyyy")
+                             };
+                return result.ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public ConsumerProfileViewModel GetById(Guid id)
+        {
+            try
+            {
+                var getConsumer = _context.ConsumerProfiles.FirstOrDefault(x => x.Id == id);
+                var result = new ConsumerProfileViewModel()
+                {
+                    Id = getConsumer.Id,
+                    ConsumerName = getConsumer.ConsumerName,
+                    BasicSalary = getConsumer.BasicSalary,
+                    Birthdate = getConsumer.Birthdate
+                };
+
+                var history = _context.ConsumerBenefitResults.Where(x => x.ConsumerProfileId == getConsumer.Id);
+                var bindRequest = from data in history
+                                  select new ConsumerBenefitResultViewModel()
+                                  {
+                                      Id = data.Id,
+                                      TransactionDateTime = data.TransactionDateTime,
+                                      Multiple = data.Multiple,
+                                      BenefitsAmountQuotation = data.BenefitsAmountQuotation,
+                                      PendedAmount = data.PendedAmount,
+                                      Benefits = data.Benefits
+                                  };
+                result.ConsumerBenefitResults = bindRequest.ToList();
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public ConsumerProfileViewModel RequestComputation(ConsumerProfile model)
         {
             try
             {
                 //check if consumer have record
-                var consumerExist = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == model.ConsumerName.Trim());
+                var consumerExist = _context.ConsumerProfiles.FirstOrDefault(x => x.Id == model.Id);
                 if (consumerExist == null)
                 {
                     //new record
@@ -35,7 +92,8 @@ namespace LIR.INFRASTRUCTURE.Services
                 else
                 {
                     //update record
-                    var modifyProfile = _context.ConsumerProfiles.FirstOrDefault(x => x.ConsumerName == model.ConsumerName.Trim());
+                    var modifyProfile = _context.ConsumerProfiles.FirstOrDefault(x => x.Id == model.Id);
+                    modifyProfile.ConsumerName = model.ConsumerName.Trim();
                     modifyProfile.BasicSalary = model.BasicSalary;
                     modifyProfile.Birthdate = model.Birthdate;
 
@@ -44,6 +102,11 @@ namespace LIR.INFRASTRUCTURE.Services
 
                     model = modifyProfile;
                 }
+
+                //remove old records
+                _context.ConsumerBenefitResults.RemoveRange(_context.ConsumerBenefitResults.Where(x => x.ConsumerProfileId == model.Id));
+                _context.SaveChanges();
+
                 var result = GenerateBenefit(model);
 
                 if (result != null)
@@ -61,6 +124,7 @@ namespace LIR.INFRASTRUCTURE.Services
 
                     return new ConsumerProfileViewModel()
                     {
+                        Id = result.Id,
                         ConsumerName = result.ConsumerName.Trim(),
                         BasicSalary = result.BasicSalary,
                         Birthdate = result.Birthdate,

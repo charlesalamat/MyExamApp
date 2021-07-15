@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Retirement Setup</h3>
+            </div>
+            <!-- <div class="col-lg-6" style="text-align: end;">
+                <button [routerLink]='["/employee-select"]' class="btn btn-primary">Add Record</button>
+            </div> -->
+        </div>
+    </div>
+    <div class="card-block" style="padding: 10px;">
+        <div class="container">
+            <form [formGroup]="setupForm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Guaranteed Issue</label>
+                        <input class="form-control" type="number" formControlName="guaranteedIssue" id="guaranteedIssue" name="guaranteedIssue">
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Max Age Limit</label>
+                        <input class="form-control" type="number" formControlName="maxAgeLimit" id="maxAgeLimit" name="maxAgeLimit">
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Min Age Limit</label>
+                        <input class="form-control" type="number" formControlName="minAgeLimit" id="minAgeLimit" name="minAgeLimit">
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Minimum Range</label>
+                        <input class="form-control" type="number" formControlName="minimumRange" id="minimumRange" name="minimumRange">
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Maximum Range</label>
+                        <input class="form-control" type="number" formControlName="maximumRange" id="maximumRange" name="maximumRange">
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Increments</label>
+                        <input class="form-control" type="number" formControlName="increments" id="increments" name="increments">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-footer" style="text-align: end;">
+        <button class="btn btn-success" [disabled]="setupForm.invalid" type="button" id="submitSetupBtn" (click)="onSubmit(setupForm)">Submit</button>
+    </div>
+</div>

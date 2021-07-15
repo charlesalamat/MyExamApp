@@ -1,0 +1,74 @@
+﻿@model ConsumerProfileViewModel
+@{
+    ViewData["Title"] = "Request Computation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-lg-9">
+    <div class="card">
+        <form asp-action="Request" asp-controller="Benefit" method="post" id="requestForm">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Request for Computation</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block" style="padding-bottom: 25px;">
+                <div class="column">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="container" style="padding-top: 25px;">
+                                <div class="col-lg-12">
+                                    <label asp-for="ConsumerName"></label>
+                                    <input class="form-control" type="text" id="ConsumerName" asp-for="ConsumerName">
+                                    <span class="text-danger" asp-validation-for="ConsumerName"></span>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label asp-for="BasicSalary"></label>
+                                    <input class="form-control" min="0" type="number" id="BasicSalary" asp-for="BasicSalary">
+                                    <span class="text-danger" asp-validation-for="BasicSalary"></span>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label asp-for="Birthdate"></label>
+                                    <input class="form-control" type="date" id="Birthdate" asp-for="Birthdate">
+                                    <span class="text-danger" asp-validation-for="Birthdate"></span>
+                                </div>
+                                @Html.HiddenFor(x => x.ConsumerBenefitResults)
+                                @if (Model.ConsumerBenefitResults.Count != 0)
+                                {
+                                    <hr />
+                                    <div class="col-lg-12">
+                                        <label> Computation Result </label>
+                                        <table class="table table-bordered table-striped table-hover" style="width: 100%;">
+                                            <thead>
+                                            <th>Multiple</th>
+                                            <th>Benefit Amount Quotation</th>
+                                            <th>Pended Amount</th>
+                                            <th>Benefit</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ConsumerBenefitResults.OrderBy(x => x.Multiple))
+                                                {
+                                                    <tr>
+                                                        <td>@item.Multiple</td>
+                                                        <td>@item.BenefitsAmountQuotation</td>
+                                                        <td>@item.PendedAmount</td>
+                                                        <td>@item.Benefits</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer" style="text-align: end;">
+                <a class="btn btn-warning" id="resetFormBtn" asp-controller="Benefit" asp-action="Request">Reset</a>
+                <button class="btn btn-success" style="margin-left: 10px;" type="submit" id="submitComputationBtn" onclick="onSubmit()">Compute</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,23 @@ namespace LIR.VIEWMODEL.ViewModels
 {
     public class ConsumerProfileViewModel : BaseViewModel
     {
+        private IList<ConsumerBenefitResultViewModel> _consumerBenefitResultViewModels;
+        [Required]
+        [Display(Name = "Consumer Name")]
         public string ConsumerName { get; set; }
+        [Required]
+        [Display(Name = "Basic Salary")]
         public double BasicSalary { get; set; }
+        [Required]
+        [Display(Name = "Birth Date")]
         public DateTime Birthdate { get; set; }
+        public string BirthdateStr { get; set; }
 
-        public IList<ConsumerBenefitResultViewModel> ConsumerBenefitResults { get; set; }
+        public IList<ConsumerBenefitResultViewModel> ConsumerBenefitResults
+        {
+            get { return _consumerBenefitResultViewModels; }
+            set { _consumerBenefitResultViewModels = value; }
+        }
     }
 
     public class ConsumerBenefitResultViewModel : BaseViewModel

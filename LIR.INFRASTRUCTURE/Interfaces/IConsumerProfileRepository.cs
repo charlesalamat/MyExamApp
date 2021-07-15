@@ -16,11 +16,18 @@ namespace LIR.INFRASTRUCTURE.Interfaces
         /// <param name="model">Consumer Profile Model</param>
         /// <returns></returns>
         ConsumerProfileViewModel RequestComputation(ConsumerProfile model);
+
         /// <summary>
-        /// Get consumer computation history
+        /// Get all consumer records
         /// </summary>
-        /// <param name="consumerName">Consumer Name</param>
-        /// <returns>Consumer Profile ViewModel</returns>
-        ConsumerProfileViewModel ViewMyHistory(string consumerName);
+        /// <returns>Consumer Profile ViewModel List</returns>
+        List<ConsumerProfileViewModel> GetAll();
+
+        /// <summary>
+        /// Get consumer profile record
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ConsumerProfileViewModel GetById(Guid id);
     }
 }
