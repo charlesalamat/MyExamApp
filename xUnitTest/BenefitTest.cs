@@ -1,4 +1,5 @@
 using LIR.DOMAIN.Entities;
+using LIR.INFRASTRUCTURE.Interfaces;
 using LIR.INFRASTRUCTURE.Services;
 using Moq;
 using Xunit;
@@ -7,7 +8,7 @@ namespace xUnitTest
 {
     public class BenefitTest
     {
-        Mock<RetirementSetupRepository> retirementSetup = new Mock<RetirementSetupRepository>();
+        Mock<IRetirementSetupRepository> retirementSetup = new Mock<IRetirementSetupRepository>();
 
         [Fact]
         public void Test_GetRetirementSetup_NotNull()
@@ -26,6 +27,25 @@ namespace xUnitTest
             var result = retirementSetup.Object.GetSetup();
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Test_GetRetirementSetup_ResultEqual()
+        {
+            var lookUpSetup = new RetirementSetup()
+            {
+                GuaranteedIssue = 50000,
+                MaxAgeLimit = 50,
+                MinAgeLimit = 25,
+                MinimumRange = 1,
+                MaximumRange = 3,
+                Increments = 1
+            };
+            retirementSetup.Setup(x => x.GetSetup()).Returns(lookUpSetup);
+
+            var result = retirementSetup.Object.GetSetup();
+
+            Assert.Equal(lookUpSetup, result);
         }
 
         [Fact]

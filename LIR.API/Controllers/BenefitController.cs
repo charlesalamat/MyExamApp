@@ -95,6 +95,10 @@ namespace LIR.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all history of all consumer
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("history")]
         public IActionResult History()
         {
@@ -113,6 +117,11 @@ namespace LIR.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get record of consumer by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("historyEdit")]
         public IActionResult HistoryEdit(Guid id)
@@ -128,6 +137,11 @@ namespace LIR.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update consumer record
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("historyEdit")]
         public IActionResult HistoryEdit([FromBody] ConsumerProfileViewModel viewModel)

@@ -10,6 +10,7 @@ namespace LIR.VIEWMODEL.ViewModels
     public class ConsumerProfileViewModel : BaseViewModel
     {
         private IList<ConsumerBenefitResultViewModel> _consumerBenefitResultViewModels;
+
         [Required]
         [Display(Name = "Consumer Name")]
         public string ConsumerName { get; set; }
